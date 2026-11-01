@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: lab-01-express-server
+    runtime: node
+    rootDir: lab-01
+    buildCommand: npm install
+    startCommand: node server.js
+    plan: free
+    envVars:
+      - key: NODE_VERSION
+        value: 20.x
+
+  - type: web
+    name: lab-02-sqlite-server
+    runtime: node
+    rootDir: lab-02
+    buildCommand: npm install && npm rebuild sqlite3 --build-from-source
+    startCommand: node server.js
+    plan: free
+    envVars:
+      - key: NODE_VERSION
+        value: 20.x
