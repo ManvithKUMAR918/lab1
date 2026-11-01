@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 app.get("/about", (req, res) => {
   res.status(200).json({
     name: "Manvith Kumar",
-    section: "YOUR_SECTION"
+    section: "S-14"
   });
 });
 

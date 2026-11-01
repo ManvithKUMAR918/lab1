@@ -4,7 +4,7 @@ This repository contains backend development laboratory experiments and submissi
 
 ## Student Details
 - **Name:** Manvith Kumar
-- **Section:** YOUR_SECTION
+- **Section:** S-14
 
 ## Labs Index
 

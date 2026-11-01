@@ -3,8 +3,8 @@
 ## Student Details
 
 - **Name:** Manvith Kumar
-- **Registration Number:** YOUR_REGISTRATION_NUMBER
-- **Section:** YOUR_SECTION
+- **Registration Number:** 252U1R8014
+- **Section:** S-14
 
 ## Live Link
 
