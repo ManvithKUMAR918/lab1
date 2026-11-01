@@ -1,9 +1,8 @@
 // server.js - Express Server with SQLite Database and CRUD Routes (Lab 2)
-// Uses Node.js built-in 'node:sqlite' module (available in Node 22+)
-// For deployment on Render (Node 20), switch to the npm 'sqlite'+'sqlite3' packages.
 const express = require("express");
 const path = require("path");
-const { DatabaseSync } = require("node:sqlite");
+const { open } = require("sqlite");
+const sqlite3 = require("sqlite3");
 
 const app = express();
 app.use(express.json());
@@ -13,14 +12,43 @@ const dbPath = path.join(__dirname, "database", "books.db");
 
 let db = null;
 
-// Initialize Database Connection and start Express Server
+// Initialize Database Connection, create table, seed data, then start server
 const initializeDBAndServer = async () => {
   try {
     // 1. Open SQLite database connection
-    db = new DatabaseSync(dbPath);
+    db = await open({
+      filename: dbPath,
+      driver: sqlite3.Database,
+    });
     console.log("Database connected successfully at:", dbPath);
 
-    // 2. Start Express server only after DB connection succeeds
+    // 2. Create table if it doesn't exist yet
+    await db.exec(`
+      CREATE TABLE IF NOT EXISTS book (
+        id    INTEGER PRIMARY KEY,
+        title TEXT,
+        author TEXT,
+        price INTEGER,
+        pages INTEGER
+      );
+    `);
+
+    // 3. Seed initial data (INSERT OR IGNORE keeps existing rows safe)
+    await db.exec(`
+      INSERT OR IGNORE INTO book (id, title, author, price, pages) VALUES
+      (1, 'The Pragmatic Programmer', 'Andrew Hunt & David Thomas', 550, 352),
+      (2, 'Clean Code', 'Robert C. Martin', 650, 464),
+      (3, 'JavaScript: The Good Parts', 'Douglas Crockford', 420, 176),
+      (4, 'Eloquent JavaScript', 'Marijn Haverbeke', 480, 472),
+      (5, 'You Don''t Know JS Yet', 'Kyle Simpson', 390, 142),
+      (6, 'Design Patterns', 'Erich Gamma et al.', 750, 395),
+      (7, 'Refactoring', 'Martin Fowler', 620, 448),
+      (8, 'Introduction to Algorithms', 'Thomas H. Cormen', 890, 1312),
+      (9, 'Node.js Design Patterns', 'Mario Casciaro', 580, 520);
+    `);
+    console.log("Database table and seed data ready.");
+
+    // 4. Start Express server only after DB is ready
     app.listen(PORT, () => {
       console.log(`Server running at http://localhost:${PORT}/`);
     });
@@ -39,7 +67,8 @@ initializeDBAndServer();
 // Endpoint 1: GET /books/ - Retrieve all books
 app.get("/books/", async (req, res, next) => {
   try {
-    const books = db.prepare("SELECT * FROM book;").all();
+    const getBooksQuery = "SELECT * FROM book;";
+    const books = await db.all(getBooksQuery);
     res.status(200).json(books);
   } catch (error) {
     next(error);
@@ -55,7 +84,8 @@ app.get("/books/:bookId/", async (req, res, next) => {
       return res.status(400).json({ error: "Invalid book ID. ID must be an integer." });
     }
 
-    const book = db.prepare("SELECT * FROM book WHERE id = ?;").get(Number(bookId));
+    const getBookQuery = "SELECT * FROM book WHERE id = ?;";
+    const book = await db.get(getBookQuery, [bookId]);
 
     if (!book) {
       return res.status(404).json({ error: "Book not found" });
@@ -84,13 +114,14 @@ app.post("/books/", async (req, res, next) => {
       });
     }
 
-    const result = db.prepare(`
+    const insertBookQuery = `
       INSERT INTO book (title, author, price, pages)
       VALUES (?, ?, ?, ?);
-    `).run(title, author, price, pages);
+    `;
+    const result = await db.run(insertBookQuery, [title, author, price, pages]);
 
     res.status(201).json({
-      id: Number(result.lastInsertRowid),
+      id: result.lastID,
       message: "Book added successfully"
     });
   } catch (error) {
@@ -122,16 +153,17 @@ app.put("/books/:bookId/", async (req, res, next) => {
     }
 
     // Check if the book exists first
-    const existingBook = db.prepare("SELECT * FROM book WHERE id = ?;").get(Number(bookId));
+    const existingBook = await db.get("SELECT * FROM book WHERE id = ?;", [bookId]);
     if (!existingBook) {
       return res.status(404).json({ error: "Book not found" });
     }
 
-    db.prepare(`
+    const updateBookQuery = `
       UPDATE book
       SET title = ?, author = ?, price = ?, pages = ?
       WHERE id = ?;
-    `).run(title, author, price, pages, Number(bookId));
+    `;
+    await db.run(updateBookQuery, [title, author, price, pages, bookId]);
 
     res.status(200).json({ message: "Book updated successfully" });
   } catch (error) {
@@ -148,7 +180,8 @@ app.delete("/books/:bookId/", async (req, res, next) => {
       return res.status(400).json({ error: "Invalid book ID. ID must be an integer." });
     }
 
-    const result = db.prepare("DELETE FROM book WHERE id = ?;").run(Number(bookId));
+    const deleteBookQuery = "DELETE FROM book WHERE id = ?;";
+    const result = await db.run(deleteBookQuery, [bookId]);
 
     if (result.changes === 0) {
       return res.status(404).json({ error: "Book not found" });
