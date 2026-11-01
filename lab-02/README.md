@@ -8,7 +8,7 @@
 
 ## Live Link
 
-Not deployed yet — see Postman/browser screenshots below for all endpoint results.
+🔗 **[https://lab-02-sqlite-server-bh0k.onrender.com](https://lab-02-sqlite-server-bh0k.onrender.com)**
 
 ## Project Description
 
