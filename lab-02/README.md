@@ -8,7 +8,7 @@
 
 ## Live Link
 
-🔗 **[https://lab-02-sqlite-server-bh0k.onrender.com](https://lab-02-sqlite-server-bh0k.onrender.com)**
+🔗 **[https://lab-02-sqlite-server-bh0k.onrender.com/books/](https://lab-02-sqlite-server-bh0k.onrender.com/books/)**
 
 ## Project Description
 

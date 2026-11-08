@@ -6,6 +6,10 @@
 - Registration Number: 252U1R8014
 - Section: S-14
 
+## Live Link
+
+[https://lab-03-rest-api-omz9.onrender.com/books](https://lab-03-rest-api-omz9.onrender.com/books)
+
 ## Objective
 
 Extend the Lab 2 book API with REST-style noun endpoints, search, sorting, price filters, pagination, input validation, and consistent HTTP status codes.
