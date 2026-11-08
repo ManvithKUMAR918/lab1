@@ -1,5 +1,11 @@
 # Lab 3: REST API, Query Parameters, Validation, and Debugging
 
+## Student Details
+
+- Name: CH.Manvith Kumar
+- Registration Number: 252U1R8014
+- Section: S-14
+
 ## Objective
 
 Extend the Lab 2 book API with REST-style noun endpoints, search, sorting, price filters, pagination, input validation, and consistent HTTP status codes.
