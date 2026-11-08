@@ -20,3 +20,14 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 20.x
+
+  - type: web
+    name: lab-03-rest-api
+    runtime: node
+    rootDir: lab-03
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    envVars:
+      - key: NODE_VERSION
+        value: 20.x

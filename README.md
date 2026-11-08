@@ -12,7 +12,7 @@ This repository contains backend development laboratory experiments and submissi
 |:---:|:---|:---:|:---:|:---:|
 | Lab 1 | Node.js and Express Server | [lab-01](./lab-01) | [Render Link](https://lab1-qk3m.onrender.com) | Completed |
 | Lab 2 | SQLite Database and CRUD Routes | [lab-02](./lab-02) | [Render Link](https://lab-02-sqlite-server-bh0k.onrender.com) | Completed |
-| Lab 3 | Upcoming | lab-03 | — | Pending |
+| Lab 3 | REST API, Query Parameters & Validation | [lab-03](./lab-03) | — | Completed |
 | Lab 4 | Upcoming | lab-04 | — | Pending |
 | Lab 5 | Upcoming | lab-05 | — | Pending |
 | Lab 6 | Upcoming | lab-06 | — | Pending |

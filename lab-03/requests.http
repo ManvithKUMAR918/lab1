@@ -1,0 +1,67 @@
+@baseUrl = http://localhost:3000
+
+### List using defaults
+GET {{baseUrl}}/books
+
+### Search, sort, price range, and pagination
+GET {{baseUrl}}/books?search_q=javascript&order_by=price&order=DESC&limit=5&offset=0&min_price=100&max_price=700
+
+### Invalid sort column
+GET {{baseUrl}}/books?order_by=unknown
+
+### Invalid price range
+GET {{baseUrl}}/books?min_price=700&max_price=100
+
+### Get a book
+GET {{baseUrl}}/books/1
+
+### Get a missing book
+GET {{baseUrl}}/books/99999
+
+### Create a book
+POST {{baseUrl}}/books
+Content-Type: application/json
+
+{
+  "title": "API Design",
+  "author": "Alex Example",
+  "price": 499,
+  "pages": 240
+}
+
+### Reject invalid input (price is not numeric)
+POST {{baseUrl}}/books
+Content-Type: application/json
+
+{
+  "title": "Invalid Book",
+  "author": "Alex Example",
+  "price": "not-a-number"
+}
+
+### Update a book
+PUT {{baseUrl}}/books/1
+Content-Type: application/json
+
+{
+  "title": "The Pragmatic Programmer - Updated",
+  "author": "Andrew Hunt & David Thomas",
+  "price": 575,
+  "pages": 352
+}
+
+### Update a missing book
+PUT {{baseUrl}}/books/99999
+Content-Type: application/json
+
+{
+  "title": "Missing",
+  "author": "Alex Example",
+  "price": 100
+}
+
+### Delete a book
+DELETE {{baseUrl}}/books/1
+
+### Delete a missing book
+DELETE {{baseUrl}}/books/99999
